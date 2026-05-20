@@ -1,5 +1,5 @@
 // ---------------------------------------------------------
-// KARTE ERSTELLEN (Startposition egal, GPX setzt später Bounds)
+// KARTE ERSTELLEN
 // ---------------------------------------------------------
 const map = L.map('map');
 
@@ -12,32 +12,35 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 // ---------------------------------------------------------
-// GPX-Datei laden und Route automatisch anzeigen
+// ⭐ OSRM-ROUTING MIT MEHREREN WEGPUNKTEN ⭐
 // ---------------------------------------------------------
-new L.GPX("Route_Pfingsti.gpx", {
-  async: true,
-  marker_options: {
-    startIconUrl: null,
-    endIconUrl: null,
-    shadowUrl: null
-  }
-}).on("loaded", function(e) {
-  map.fitBounds(e.target.getBounds());
-}).addTo(map);
+
+// HIER trägst du deine Route ein (Start → Zwischenpunkte → Ziel)
+const punkte = [
+  [48.63269832105482, 9.775715624565734], // Start
+  [48.61560148496865, 9.784875696421906], // Mittag
+  [48.63269832105482, 9.775715624565734]  // Ziel
+];
+
+// OSRM erwartet lon,lat;lon,lat;...
+const coordsString = punkte
+  .map(p => `${p[1]},${p[0]}`)
+  .join(";");
+
+fetch(`https://router.project-osrm.org/route/v1/foot/${coordsString}?overview=full&geometries=geojson`)
+  .then(res => res.json())
+  .then(data => {
+    const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+    L.polyline(coords, { color: "green", weight: 4 }).addTo(map);
+    map.fitBounds(coords);
+  });
+
 // ---------------------------------------------------------
 // CHECKPOINTS (Stationen, die rot werden, wenn du nah genug bist)
 // ---------------------------------------------------------
 const checkpoints = [
- // { name: "Station 1", coords: [], reached: false },
-  // { name: "Station 2", coords: [], reached: false },
-  // { name: "Station 3", coords: [], reached: false },
-  // { name: "Station 4", coords: [], reached: false },
-  // { name: "Station 5", coords: [], reached: false },
-  // { name: "Station 6", coords: [], reached: false },
-  // { name: "Station 7", coords: [], reached: false },
-  // { name: "Station 8", coords: [], reached: false },
-  { name: " Start", coords: [48.63269832105482, 9.775715624565734], reached: false },
-  { name: "Ziel", coords: [48.63269832105482, 9.775715624565734], reached: false },
+  { name: "Start",  coords: [48.63269832105482, 9.775715624565734], reached: false },
+  { name: "Ziel",   coords: [48.63269832105482, 9.775715624565734], reached: false },
   { name: "Mittag", coords: [48.61560148496865, 9.784875696421906], reached: false },
 ];
 
