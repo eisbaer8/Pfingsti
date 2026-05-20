@@ -52,12 +52,13 @@ function starteRoute(punkte, farbe) {
 const routeHin = [
   [48.63269832105482, 9.775715624565734],   // Start
   [48.634871, 9.783646],                    // Station 1 
+  [48.626529, 9.778440],                    // Wegpunkt 
   [48.621970, 9.781733],                    // Station 2 
   [48.626293, 9.792231],                    // Station 3
   [48.615693, 9.795932],                    // Station 4
   [48.61560148496865, 9.784875696421906],   // Mittag
   [48.608009, 9.781743],                    // Station 5
-  [48.611950, 9.771320],                    // Station 6
+  [48.612247, 9.771929],                    // Station 6
   [48.621330, 9.770260],                    // Station 7
   [48.628866, 9.778819],                    // Station 8 
   [48.63269832105482, 9.775715624565734]    // Ziel
@@ -73,11 +74,11 @@ const routeZurueck = [
 // ⭐ BUTTON-EVENTS ⭐
 // ---------------------------------------------------------
 document.getElementById("hin").addEventListener("click", () => {
-  starteRoute(routeHin, "green");   // Hinweg = grün
+  starteRoute(routeHin, "blue");   // Hinweg = grün
 });
 
 document.getElementById("zurueck").addEventListener("click", () => {
-  starteRoute(routeZurueck, "blue"); // Rückweg = blau
+  starteRoute(routeZurueck, "red"); // Rückweg = blau
 });
 // ---------------------------------------------------------
 // CHECKPOINTS
