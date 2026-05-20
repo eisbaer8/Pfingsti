@@ -96,17 +96,36 @@ const checkpoints = [
 ];
 
 // ---------------------------------------------------------
-// CHECKPOINT-MARKER
+// CHECKPOINT-MARKER MIT INDIVIDUELLEN ICONS AUS /img/
 // ---------------------------------------------------------
 const checkpointMarkers = [];
 
 checkpoints.forEach((cp) => {
-  const marker = L.circleMarker(cp.coords, {
-    radius: 8,
-    color: 'gray',
-    fillColor: 'gray',
-    fillOpacity: 0.8
-  }).addTo(map)
+  let iconUrl;
+
+  switch (cp.name) {
+    case "Start":
+      iconUrl = "img/start_icon.png";
+      break;
+    case "Mittag":
+      iconUrl = "img/mittag_icon.png";
+      break;
+    case "Ziel":
+      iconUrl = "img/ziel_icon.png";  // vorher falsch: start_icon.png
+      break;
+    default:
+      iconUrl = "img/default_icon.png";
+  }
+
+  const icon = L.icon({
+    iconUrl,
+    iconSize: [45, 45],
+    iconAnchor: [22, 22],
+    popupAnchor: [0, -22]
+  });
+
+  const marker = L.marker(cp.coords, { icon })
+    .addTo(map)
     .bindPopup(cp.name);
 
   checkpointMarkers.push(marker);
@@ -154,7 +173,6 @@ function checkCheckpoints(userLat, userLng) {
     }
   });
 }
-
 // ---------------------------------------------------------
 // ⭐ SPIELERISCHE WEGPUNKTE (Info + Aufgaben) ⭐
 // ---------------------------------------------------------
@@ -163,6 +181,7 @@ const gamePoints = [
     name: "Station 1",
     coords: [48.634871, 9.783646],
     type: "info",
+    icon: "img/station1.png",
     reached: false
   },
   {
@@ -170,12 +189,14 @@ const gamePoints = [
     coords: [48.631932, 9.779618],
     type: "quest",
     task: "Wie viele Bänke stehen hier?",
+    icon: "img/aufgabe1.png",
     reached: false
   },
   {
     name: "Station 2",
     coords: [48.621970, 9.781733],
     type: "info",
+    icon: "img/station2.png",
     reached: false
   },
   {
@@ -183,6 +204,95 @@ const gamePoints = [
     coords: [48.624392, 9.786778],
     type: "quest",
     task: "Welche Farbe hat das Schild?",
+    icon: "img/aufgabe1.png",
+    reached: false
+  },
+  {
+    name: "Station 3",
+    coords: [48.626293, 9.792231],
+    type: "info",
+    icon: "img/station3.png",
+    reached: false
+  },
+  {
+    name: "Aufgabe 3",
+    coords: [48.621579, 9.791860],
+    type: "quest",
+    task: "Wie viele Bänke stehen hier?",
+    icon: "img/aufgabe1.png",
+    reached: false
+  },
+  {
+    name: "Station 4",
+    coords: [48.615693, 9.795932],
+    type: "info",
+    icon: "img/station4.png",
+    reached: false
+  },
+  {
+    name: "Aufgabe 4",
+    coords: [48.614848, 9.795814],
+    type: "quest",
+    task: "Welche Farbe hat das Schild?",
+    icon: "img/aufgabe1.png",
+    reached: false
+  },{
+    name: "Station 5",
+    coords: [48.608009, 9.781743],
+    type: "info",
+    icon: "img/station5.png",
+    reached: false
+  },
+  {
+    name: "Aufgabe 5",
+    coords: [48.609789, 9.785213],
+    type: "quest",
+    task: "Wie viele Bänke stehen hier?",
+    icon: "img/aufgabe1.png",
+    reached: false
+  },
+  {
+    name: "Station 6",
+    coords: [48.612247, 9.771929],
+    type: "info",
+    icon: "img/station6.png",
+    reached: false
+  },
+  {
+    name: "Aufgabe 6",
+    coords: [48.610042, 9.780076],
+    type: "quest",
+    task: "Welche Farbe hat das Schild?",
+    icon: "img/aufgabe1.png",
+    reached: false
+  },{
+    name: "Station 7",
+    coords: [48.621330, 9.770260],
+    type: "info",
+    icon: "img/station7.png",
+    reached: false
+  },
+  {
+    name: "Aufgabe 7",
+    coords: [48.614632, 9.772938],
+    type: "quest",
+    task: "Wie viele Bänke stehen hier?",
+    icon: "img/aufgabe1.png",
+    reached: false
+  },
+  {
+    name: "Station 8",
+    coords: [48.628866, 9.778819],
+    type: "info",
+    icon: "img/station8.png",
+    reached: false
+  },
+  {
+    name: "Aufgabe 8",
+    coords: [48.624662, 9.774031],
+    type: "quest",
+    task: "Welche Farbe hat das Schild?",
+    icon: "img/aufgabe1.png",
     reached: false
   }
 ];
@@ -190,13 +300,14 @@ const gamePoints = [
 const gameMarkers = [];
 
 gamePoints.forEach((gp) => {
-  const color = gp.type === "quest" ? "blue" : "yellow";
 
-  const marker = L.circleMarker(gp.coords, {
-    radius: 10,
-    color: color,
-    fillColor: color,
-    fillOpacity: 0.8
+  const marker = L.marker(gp.coords, {
+    icon: L.icon({
+      iconUrl: gp.icon,
+      iconSize: [45, 45],
+      iconAnchor: [22, 45],
+      popupAnchor: [0, -45]
+    })
   }).addTo(map)
     .bindPopup(gp.name);
 
@@ -215,10 +326,14 @@ function checkGamePoints(userLat, userLng) {
     if (dist <= threshold) {
       gp.reached = true;
 
-      gameMarkers[index].setStyle({
-        color: "red",
-        fillColor: "red"
-      });
+      // Bild ändern, wenn erreicht
+      gameMarkers[index].setIcon(
+        L.icon({
+          iconUrl: "img/erreicht.png",
+          iconSize: [45, 45],
+          iconAnchor: [22, 45]
+        })
+      );
 
       if (gp.type === "quest") {
         alert("Aufgabe bei " + gp.name + ":\n\n" + gp.task);
@@ -228,6 +343,8 @@ function checkGamePoints(userLat, userLng) {
     }
   });
 }
+
+
 
 // ---------------------------------------------------------
 // GPS
