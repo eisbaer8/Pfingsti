@@ -73,7 +73,7 @@ const routeZurueck = [
 // ⭐ BUTTON-EVENTS ⭐
 // ---------------------------------------------------------
 document.getElementById("hin").addEventListener("click", () => {
-  starteRoute(routeHin, "white");   // Hinweg = grün
+  starteRoute(routeHin, "green");   // Hinweg = grün
 });
 
 document.getElementById("zurueck").addEventListener("click", () => {
