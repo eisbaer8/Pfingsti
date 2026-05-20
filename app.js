@@ -12,7 +12,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 // ---------------------------------------------------------
-// ⭐ ROUTING-FUNKTION (OSRM) ⭐
+// ⭐ ROUTING-FUNKTION (ORS) ⭐
 // ---------------------------------------------------------
 
 const ORS_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjMwZDg4ZWM0MmMyYTQ4YzQ5NjlkZDhiYmQ1NGI1NzY1IiwiaCI6Im11cm11cjY0In0=";
@@ -24,7 +24,6 @@ function starteRoute(punkte, farbe) {
     map.removeLayer(aktuelleRoute);
   }
 
-  // ORS erwartet: [lon, lat]
   const coords = punkte.map(p => [p[1], p[0]]);
 
   fetch("https://api.openrouteservice.org/v2/directions/foot-hiking/geojson", {
@@ -45,6 +44,7 @@ function starteRoute(punkte, farbe) {
     })
     .catch(err => console.error("ORS Fehler:", err));
 }
+
 // ---------------------------------------------------------
 // ⭐ ROUTEN-DEFINITIONEN (Hinweg / Rückweg) ⭐
 // ---------------------------------------------------------
@@ -59,8 +59,7 @@ const routeHin = [
   [48.626293, 9.792231],                                     // Station 3
   [48.621579, 9.791860],                    // Aufgabe 3
   [48.615693, 9.795932],                                     // Station 4
-  [48.614740, 9.794486],                                                   // Wegpunkt
-  [48.614833, 9.792761],                    // Aufgabe 4
+  [48.614848, 9.795814],                    // Aufgabe 4
   [48.61560148496865, 9.784875696421906],   // Mittag
   [48.609789, 9.785213],                    // Aufgabe 5
   [48.607640, 9.784240],                                                  // Wegpunkt 
@@ -74,22 +73,19 @@ const routeHin = [
   [48.63269832105482, 9.775715624565734]    // Ziel
 ];
 
-const routeZurueck = [
-  [48.63269832105482, 9.775715624565734], // Ziel wird Start
-  [48.61560148496865, 9.784875696421906], // Mittag rückwärts
-  [48.63269832105482, 9.775715624565734]  // Start wird Ziel
-];
+const routeZurueck = [...routeHin].reverse();
 
 // ---------------------------------------------------------
 // ⭐ BUTTON-EVENTS ⭐
 // ---------------------------------------------------------
 document.getElementById("hin").addEventListener("click", () => {
-  starteRoute(routeHin, "blue");   // Hinweg = grün
+  starteRoute(routeHin, "blue");
 });
 
 document.getElementById("zurueck").addEventListener("click", () => {
-  starteRoute(routeZurueck, "green"); // Rückweg = blau
+  starteRoute(routeZurueck, "green");
 });
+
 // ---------------------------------------------------------
 // CHECKPOINTS
 // ---------------------------------------------------------
@@ -160,6 +156,80 @@ function checkCheckpoints(userLat, userLng) {
 }
 
 // ---------------------------------------------------------
+// ⭐ SPIELERISCHE WEGPUNKTE (Info + Aufgaben) ⭐
+// ---------------------------------------------------------
+const gamePoints = [
+  {
+    name: "Station 1",
+    coords: [48.634871, 9.783646],
+    type: "info",
+    reached: false
+  },
+  {
+    name: "Aufgabe 1",
+    coords: [48.631932, 9.779618],
+    type: "quest",
+    task: "Wie viele Bänke stehen hier?",
+    reached: false
+  },
+  {
+    name: "Station 2",
+    coords: [48.621970, 9.781733],
+    type: "info",
+    reached: false
+  },
+  {
+    name: "Aufgabe 2",
+    coords: [48.624392, 9.786778],
+    type: "quest",
+    task: "Welche Farbe hat das Schild?",
+    reached: false
+  }
+];
+
+const gameMarkers = [];
+
+gamePoints.forEach((gp) => {
+  const color = gp.type === "quest" ? "blue" : "yellow";
+
+  const marker = L.circleMarker(gp.coords, {
+    radius: 10,
+    color: color,
+    fillColor: color,
+    fillOpacity: 0.8
+  }).addTo(map)
+    .bindPopup(gp.name);
+
+  gameMarkers.push(marker);
+});
+
+function checkGamePoints(userLat, userLng) {
+  const threshold = 35;
+
+  gamePoints.forEach((gp, index) => {
+    if (gp.reached) return;
+
+    const [gpLat, gpLng] = gp.coords;
+    const dist = distanceInMeters(userLat, userLng, gpLat, gpLng);
+
+    if (dist <= threshold) {
+      gp.reached = true;
+
+      gameMarkers[index].setStyle({
+        color: "red",
+        fillColor: "red"
+      });
+
+      if (gp.type === "quest") {
+        alert("Aufgabe bei " + gp.name + ":\n\n" + gp.task);
+      } else {
+        alert(gp.name + " erreicht!");
+      }
+    }
+  });
+}
+
+// ---------------------------------------------------------
 // GPS
 // ---------------------------------------------------------
 let userMarker = null;
@@ -170,16 +240,18 @@ if ("geolocation" in navigator) {
       const lat = pos.coords.latitude;
       const lng = pos.coords.longitude;
 
-     if (!userMarker) {
-      userMarker = L.marker([lat, lng]).addTo(map)
-        .bindPopup("Du bist hier");
+      if (!userMarker) {
+        userMarker = L.marker([lat, lng]).addTo(map)
+          .bindPopup("Du bist hier");
 
-       map.setView([lat, lng], 16);  // ⭐ WICHTIG: Zoom auf Standort
-  }    else {
-      userMarker.setLatLng([lat, lng]);
-}
+        map.setView([lat, lng], 16);
+      } else {
+        userMarker.setLatLng([lat, lng]);
+      }
 
       checkCheckpoints(lat, lng);
+      checkGamePoints(lat, lng);
+
     },
     (err) => console.error("GPS Fehler:", err),
     { enableHighAccuracy: true }
