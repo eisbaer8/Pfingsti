@@ -30,9 +30,17 @@ new L.GPX("Route_Pfingsti.gpx", {
 // CHECKPOINTS (Stationen, die rot werden, wenn du nah genug bist)
 // ---------------------------------------------------------
 const checkpoints = [
-  { name: "Station 1", coords: [48.137154, 11.576124], reached: false },
-  { name: "Station 2", coords: [48.140228, 11.560716], reached: false },
-  { name: "Station 3", coords: [48.148545, 11.549774], reached: false }
+  { name: "Station 1", coords: [], reached: false },
+  { name: "Station 2", coords: [], reached: false },
+  { name: "Station 3", coords: [], reached: false },
+  { name: "Station 4", coords: [], reached: false },
+  { name: "Station 5", coords: [], reached: false },
+  { name: "Station 6", coords: [], reached: false },
+  { name: "Station 7", coords: [], reached: false },
+  { name: "Station 8", coords: [], reached: false },
+  { name: " Start", coords: [], reached: false },
+  { name: "Ziel", coords: [], reached: false },
+  { name: "Mittag", coords: [], reached: false },
 ];
 
 // ---------------------------------------------------------
