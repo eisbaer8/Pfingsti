@@ -1,7 +1,7 @@
 // ---------------------------------------------------------
 // KARTE ERSTELLEN (Startposition egal, GPX setzt später Bounds)
 // ---------------------------------------------------------
-const map = L.map('map').setView([48.137154, 11.576124], 14);
+const map = L.map('map');
 
 // ---------------------------------------------------------
 // KARTENLAYOUT LADEN (OpenStreetMap)
@@ -22,25 +22,23 @@ new L.GPX("Route_Pfingsti.gpx", {
     shadowUrl: null
   }
 }).on("loaded", function(e) {
-  // Karte auf die GPX-Route zoomen
   map.fitBounds(e.target.getBounds());
 }).addTo(map);
-
 // ---------------------------------------------------------
 // CHECKPOINTS (Stationen, die rot werden, wenn du nah genug bist)
 // ---------------------------------------------------------
 const checkpoints = [
-  { name: "Station 1", coords: [], reached: false },
-  { name: "Station 2", coords: [], reached: false },
-  { name: "Station 3", coords: [], reached: false },
-  { name: "Station 4", coords: [], reached: false },
-  { name: "Station 5", coords: [], reached: false },
-  { name: "Station 6", coords: [], reached: false },
-  { name: "Station 7", coords: [], reached: false },
-  { name: "Station 8", coords: [], reached: false },
-  { name: " Start", coords: [], reached: false },
-  { name: "Ziel", coords: [], reached: false },
-  { name: "Mittag", coords: [], reached: false },
+ // { name: "Station 1", coords: [], reached: false },
+  // { name: "Station 2", coords: [], reached: false },
+  // { name: "Station 3", coords: [], reached: false },
+  // { name: "Station 4", coords: [], reached: false },
+  // { name: "Station 5", coords: [], reached: false },
+  // { name: "Station 6", coords: [], reached: false },
+  // { name: "Station 7", coords: [], reached: false },
+  // { name: "Station 8", coords: [], reached: false },
+  { name: " Start", coords: [48.63269832105482, 9.775715624565734], reached: false },
+  { name: "Ziel", coords: [48.63269832105482, 9.775715624565734], reached: false },
+  { name: "Mittag", coords: [48.61560148496865, 9.784875696421906], reached: false },
 ];
 
 // ---------------------------------------------------------
