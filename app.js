@@ -12,31 +12,58 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 // ---------------------------------------------------------
-// ⭐ OSRM-ROUTING MIT MEHREREN WEGPUNKTEN ⭐
+// ⭐ ROUTING-FUNKTION (OSRM) ⭐
+// ---------------------------------------------------------
+let aktuelleRoute = null;
+
+function starteRoute(punkte, farbe) {
+
+  // Alte Route entfernen
+  if (aktuelleRoute) {
+    map.removeLayer(aktuelleRoute);
+  }
+
+  const coordsString = punkte
+    .map(p => `${p[1]},${p[0]}`)
+    .join(";");
+
+  fetch(`https://router.project-osrm.org/route/v1/foot/${coordsString}?overview=full&geometries=geojson`)
+    .then(res => res.json())
+    .then(data => {
+      const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+      aktuelleRoute = L.polyline(coords, { color: "green", weight: 4 }).addTo(map);
+      map.fitBounds(coords);
+    });
+}
+
+// ---------------------------------------------------------
+// ⭐ ROUTEN-DEFINITIONEN (Hinweg / Rückweg) ⭐
 // ---------------------------------------------------------
 
-// HIER trägst du deine Route ein (Start → Zwischenpunkte → Ziel)
-const punkte = [
+const routeHin = [
   [48.63269832105482, 9.775715624565734], // Start
   [48.61560148496865, 9.784875696421906], // Mittag
   [48.63269832105482, 9.775715624565734]  // Ziel
 ];
 
-// OSRM erwartet lon,lat;lon,lat;...
-const coordsString = punkte
-  .map(p => `${p[1]},${p[0]}`)
-  .join(";");
-
-fetch(`https://router.project-osrm.org/route/v1/foot/${coordsString}?overview=full&geometries=geojson`)
-  .then(res => res.json())
-  .then(data => {
-    const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-    L.polyline(coords, { color: "green", weight: 4 }).addTo(map);
-    map.fitBounds(coords);
-  });
+const routeZurueck = [
+  [48.63269832105482, 9.775715624565734], // Ziel wird Start
+  [48.61560148496865, 9.784875696421906], // Mittag rückwärts
+  [48.63269832105482, 9.775715624565734]  // Start wird Ziel
+];
 
 // ---------------------------------------------------------
-// CHECKPOINTS (Stationen, die rot werden, wenn du nah genug bist)
+// ⭐ BUTTON-EVENTS ⭐
+// ---------------------------------------------------------
+document.getElementById("hin").addEventListener("click", () => {
+  starteRoute(routeHin, "green");   // Hinweg = grün
+});
+
+document.getElementById("zurueck").addEventListener("click", () => {
+  starteRoute(routeZurueck, "blue"); // Rückweg = blau
+});
+// ---------------------------------------------------------
+// CHECKPOINTS
 // ---------------------------------------------------------
 const checkpoints = [
   { name: "Start",  coords: [48.63269832105482, 9.775715624565734], reached: false },
@@ -45,7 +72,7 @@ const checkpoints = [
 ];
 
 // ---------------------------------------------------------
-// CHECKPOINT-MARKER AUF DER KARTE ANZEIGEN
+// CHECKPOINT-MARKER
 // ---------------------------------------------------------
 const checkpointMarkers = [];
 
@@ -62,14 +89,14 @@ checkpoints.forEach((cp) => {
 });
 
 // ---------------------------------------------------------
-// DISTANZBERECHNUNG (Haversine-Formel)
+// DISTANZBERECHNUNG
 // ---------------------------------------------------------
 function distanceInMeters(lat1, lon1, lat2, lon2) {
   const R = 6371000;
   const toRad = (v) => v * Math.PI / 180;
 
   const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lat2 - lon1);
+  const dLon = toRad(lon2 - lon1);
 
   const a =
     Math.sin(dLat / 2) ** 2 +
@@ -80,7 +107,7 @@ function distanceInMeters(lat1, lon1, lat2, lon2) {
 }
 
 // ---------------------------------------------------------
-// PRÜFEN, OB EIN CHECKPOINT ERREICHT WURDE
+// CHECKPOINT-PRÜFUNG
 // ---------------------------------------------------------
 function checkCheckpoints(userLat, userLng) {
   const threshold = 40;
@@ -105,7 +132,7 @@ function checkCheckpoints(userLat, userLng) {
 }
 
 // ---------------------------------------------------------
-// GPS AKTIVIEREN UND NUTZERPOSITION AKTUALISIEREN
+// GPS
 // ---------------------------------------------------------
 let userMarker = null;
 
