@@ -1,7 +1,7 @@
 // ---------------------------------------------------------
 // KARTE ERSTELLEN
 // ---------------------------------------------------------
-const map = L.map('map');
+const map = L.map('map').setView([48.6327, 9.7757], 13);
 
 // ---------------------------------------------------------
 // KARTENLAYOUT LADEN (OpenStreetMap)
@@ -18,7 +18,6 @@ let aktuelleRoute = null;
 
 function starteRoute(punkte, farbe) {
 
-  // Alte Route entfernen
   if (aktuelleRoute) {
     map.removeLayer(aktuelleRoute);
   }
@@ -31,7 +30,7 @@ function starteRoute(punkte, farbe) {
     .then(res => res.json())
     .then(data => {
       const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-      aktuelleRoute = L.polyline(coords, { color: "green", weight: 4 }).addTo(map);
+      aktuelleRoute = L.polyline(coords, { color: farbe, weight: 4 }).addTo(map);
       map.fitBounds(coords);
     });
 }
@@ -142,12 +141,14 @@ if ("geolocation" in navigator) {
       const lat = pos.coords.latitude;
       const lng = pos.coords.longitude;
 
-      if (!userMarker) {
-        userMarker = L.marker([lat, lng]).addTo(map)
-          .bindPopup("Du bist hier");
-      } else {
-        userMarker.setLatLng([lat, lng]);
-      }
+     if (!userMarker) {
+      userMarker = L.marker([lat, lng]).addTo(map)
+        .bindPopup("Du bist hier");
+
+       map.setView([lat, lng], 16);  // ⭐ WICHTIG: Zoom auf Standort
+  }    else {
+      userMarker.setLatLng([lat, lng]);
+}
 
       checkCheckpoints(lat, lng);
     },
