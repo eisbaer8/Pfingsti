@@ -15,7 +15,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // ⭐ ROUTING-FUNKTION (OSRM) ⭐
 // ---------------------------------------------------------
 
-const ORS_API_KEY = "DEIN_API_KEY_HIER";
+const ORS_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjMwZDg4ZWM0MmMyYTQ4YzQ5NjlkZDhiYmQ1NGI1NzY1IiwiaCI6Im11cm11cjY0In0=";
 let aktuelleRoute = null;
 
 function starteRoute(punkte, farbe) {
