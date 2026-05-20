@@ -14,6 +14,8 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // ---------------------------------------------------------
 // ⭐ ROUTING-FUNKTION (OSRM) ⭐
 // ---------------------------------------------------------
+
+const ORS_API_KEY = "DEIN_API_KEY_HIER";
 let aktuelleRoute = null;
 
 function starteRoute(punkte, farbe) {
@@ -22,19 +24,27 @@ function starteRoute(punkte, farbe) {
     map.removeLayer(aktuelleRoute);
   }
 
-  const coordsString = punkte
-    .map(p => `${p[1]},${p[0]}`)
-    .join(";");
+  // ORS erwartet: [lon, lat]
+  const coords = punkte.map(p => [p[1], p[0]]);
 
-  fetch(`https://router.project-osrm.org/route/v1/foot/${coordsString}?overview=full&geometries=geojson`)
+  fetch("https://api.openrouteservice.org/v2/directions/foot-hiking/geojson", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": ORS_API_KEY
+    },
+    body: JSON.stringify({
+      coordinates: coords
+    })
+  })
     .then(res => res.json())
     .then(data => {
-      const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-      aktuelleRoute = L.polyline(coords, { color: farbe, weight: 4 }).addTo(map);
-      map.fitBounds(coords);
-    });
+      const routeCoords = data.features[0].geometry.coordinates.map(c => [c[1], c[0]]);
+      aktuelleRoute = L.polyline(routeCoords, { color: farbe, weight: 4 }).addTo(map);
+      map.fitBounds(routeCoords);
+    })
+    .catch(err => console.error("ORS Fehler:", err));
 }
-
 // ---------------------------------------------------------
 // ⭐ ROUTEN-DEFINITIONEN (Hinweg / Rückweg) ⭐
 // ---------------------------------------------------------
