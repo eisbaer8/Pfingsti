@@ -74,6 +74,30 @@ const routeHin = [
 ];
 
 const routeZurueck = [...routeHin].reverse();
+// ---------------------------------------------------------
+// AUTOMATISCHE ROUTENANZEIGE FÜR ALLE ROLLEN
+// ---------------------------------------------------------
+const role = localStorage.getItem("role");
+const teamId = localStorage.getItem("teamId");
+
+// TEAM → Richtung abhängig von Teamnummer
+if (role === "team" && teamId) {
+  const teamNum = parseInt(teamId.replace("team", ""));
+
+  // Teams 1,3,5,7 → richtige Richtung
+  if ([1, 3, 5, 7].includes(teamNum)) {
+    starteRoute(routeHin, "blue");
+  } 
+  // Teams 2,4,6,8 → falsche Richtung
+  else {
+    starteRoute(routeZurueck, "blue");
+  }
+}
+
+// ADMIN & VIEWER → immer Hinroute
+if (role === "admin" || role === "viewer") {
+  starteRoute(routeHin, "gray");
+}
 
 // ---------------------------------------------------------
 // ⭐ BUTTON-EVENTS ⭐
