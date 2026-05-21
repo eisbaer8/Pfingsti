@@ -6,7 +6,7 @@ if (adminRole !== "admin") {
 }
 
 // Firestore + Functions
-const db = firebase.firestore();
+// ❌ const db = firebase.firestore();  ← entfernen!
 const deleteFn = firebase.functions().httpsCallable("deleteUpload");
 
 // Marker-Speicher für Teams
