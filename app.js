@@ -367,7 +367,7 @@ function checkGamePoints(userLat, userLng) {
 // GPS – nur für Teams (role === "team")
 // ---------------------------------------------------------
 let userMarker = null;
-const role = localStorage.getItem("role");
+// const role = localStorage.getItem("role");
 
 if (role === "team" && "geolocation" in navigator) {
   navigator.geolocation.watchPosition(
