@@ -77,8 +77,8 @@ const routeZurueck = [...routeHin].reverse();
 // ---------------------------------------------------------
 // AUTOMATISCHE ROUTENANZEIGE FÜR ALLE ROLLEN
 // ---------------------------------------------------------
-const role = localStorage.getItem("role");
-const teamId = localStorage.getItem("teamId");
+window.role = localStorage.getItem("role");
+window.teamId = localStorage.getItem("teamId");
 
 // TEAM → Richtung abhängig von Teamnummer
 if (role === "team" && teamId) {

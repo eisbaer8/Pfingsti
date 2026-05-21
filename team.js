@@ -1,5 +1,5 @@
-const teamRole = localStorage.getItem("role");
-const teamId = localStorage.getItem("teamId");
+const teamId = window.teamId;
+const teamRole = window.role;
 
 if (teamRole !== "team" || !teamId) {
   alert("Kein Team angemeldet");
