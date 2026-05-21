@@ -2,7 +2,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAgziNQwcsktG5Um2AA2y7sG9I48Rrjx6U",
   authDomain: "pfingsti.firebaseapp.com",
   projectId: "pfingsti",
-  storageBucket: "pfingsti.appspot.com",
+  storageBucket: "pfingsti.firebasestorage.app",
   messagingSenderId: "440967905315",
   appId: "1:440967905315:web:b8aebe8994209c1068f196",
   measurementId: "G-EX200KBNZ1"
@@ -13,6 +13,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const storage = firebase.storage("gs://pfingsti.firebasestorage.app");
 const auth = firebase.auth();
+
 
 // --- Login-Funktionen für index.html ---
 
