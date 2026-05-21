@@ -11,7 +11,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
-const storage = firebase.storage("gs://pfingsti.firebasestorage.app");
+const storage = firebase.storage();   // ← richtig
 const auth = firebase.auth();
 
 
