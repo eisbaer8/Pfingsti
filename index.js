@@ -1,41 +1,30 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const cors = require("cors")({ origin: true });
 
 admin.initializeApp();
 
-// Cloud Function: Löscht Datei + Firestore-Eintrag
-exports.deleteUpload = functions.https.onCall(async (data, context) => {
-  // Prüfen ob Admin
-  if (!context.auth || context.auth.token.admin !== true) {
-    throw new functions.https.HttpsError(
-      "permission-denied",
-      "Nur Admins dürfen löschen."
-    );
-  }
+// HTTP-Function statt onCall → funktioniert mit GitHub Pages
+exports.deleteUpload = functions.https.onRequest((req, res) => {
+  cors(req, res, async () => {
+    try {
+      const filePath = req.body.filePath;
+      const docId = req.body.docId;
 
-  const filePath = data.filePath;     // z.B. "uploads/12345.jpg"
-  const docId = data.docId;           // Firestore Dokument-ID
+      if (!filePath || !docId) {
+        return res.status(400).send({ error: "filePath und docId fehlen" });
+      }
 
-  if (!filePath || !docId) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      "filePath und docId müssen übergeben werden."
-    );
-  }
+      // Datei löschen
+      await admin.storage().bucket().file(filePath).delete();
 
-  try {
-    // 1. Datei aus Storage löschen
-    await admin.storage().bucket().file(filePath).delete();
+      // Firestore-Eintrag löschen
+      await admin.firestore().collection("uploads").doc(docId).delete();
 
-    // 2. Firestore-Eintrag löschen
-    await admin.firestore().collection("uploads").doc(docId).delete();
-
-    return { success: true };
-  } catch (error) {
-    console.error("Fehler beim Löschen:", error);
-    throw new functions.https.HttpsError(
-      "internal",
-      "Löschen fehlgeschlagen."
-    );
-  }
+      return res.status(200).send({ success: true });
+    } catch (err) {
+      console.error("Fehler beim Löschen:", err);
+      return res.status(500).send({ error: err.message });
+    }
+  });
 });
