@@ -9,6 +9,10 @@ exports.deleteUpload = functions.https.onRequest((req, res) => {
     try {
       const { filePath, docId } = req.body;
 
+      if (!docId) {
+        return res.status(400).json({ error: "docId fehlt" });
+      }
+
       // 🔥 1) Wenn KEIN Bild → nur Firestore löschen
       if (!filePath) {
         await admin.firestore().collection("uploads").doc(docId).delete();
