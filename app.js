@@ -99,16 +99,6 @@ if (role === "admin" || role === "viewer") {
   starteRoute(routeHin, "gray");
 }
 
-// ---------------------------------------------------------
-// ⭐ BUTTON-EVENTS ⭐
-// ---------------------------------------------------------
-document.getElementById("hin").addEventListener("click", () => {
-  starteRoute(routeHin, "blue");
-});
-
-document.getElementById("zurueck").addEventListener("click", () => {
-  starteRoute(routeZurueck, "green");
-});
 
 // ---------------------------------------------------------
 // CHECKPOINTS
