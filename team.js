@@ -45,21 +45,31 @@ async function uploadTask() {
   }
 
   try {
-    const ref = storage.ref(`uploads/${teamId}/${taskId}_${Date.now()}.png`);
+    // 🔥 Speicherpfad korrekt erzeugen
+    const fileName = `${taskId}_${Date.now()}.png`;
+    const storagePath = `uploads/${teamId}/${fileName}`;
+
+    // 🔥 Datei hochladen
+    const ref = storage.ref(storagePath);
     await ref.put(file);
+
+    // 🔥 Download-URL holen
     const url = await ref.getDownloadURL();
 
+    // 🔥 Firestore-Eintrag speichern
     await db.collection("uploads").add({
       teamId,
       taskId,
       url,
       answer: answer || null,
+      storagePath, // wichtig für deleteUpload()
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
     alert("Upload erfolgreich");
     fileInput.value = "";
     document.getElementById("answer").value = "";
+
   } catch (e) {
     console.error(e);
     alert("Fehler beim Upload");
