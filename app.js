@@ -426,31 +426,80 @@ if (role === "team" && teamId) {
       // Klick-Handler nur EINMAL setzen
       if (!gameMarkers[index]._hasClickHandler) {
         gameMarkers[index].on("click", () => {
-
-          // QUEST → Aufgabe anzeigen
-          if (gp.type === "quest") {
-
-            // Wenn ein Bild existiert → Popup-Fenster mit Bild
-            if (gp.image) {
-              const w = window.open("");
-              w.document.write("<h2>" + gp.name + "</h2>");
-              w.document.write("<img src='" + gp.image + "' style='width:100%;max-width:300px;border-radius:8px;'>");
-              w.document.write("<p style='font-size:18px;'>" + gp.task + "</p>");
-              return;
-            }
-
-            // Ohne Bild → normaler Text
-            alert("Aufgabe: " + gp.task);
-          }
-
-          // INFO-Punkt
-          else {
-            alert(gp.name);
-          }
+          showTaskPopup(gp);
         });
 
         gameMarkers[index]._hasClickHandler = true;
       }
     });
   });
+}
+
+
+// ---------------------------------------------------------
+// POPUP-FENSTER FÜR AUFGABEN
+// ---------------------------------------------------------
+function showTaskPopup(gp) {
+  // Overlay
+  const overlay = document.createElement("div");
+  overlay.style.position = "fixed";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.width = "100vw";
+  overlay.style.height = "100vh";
+  overlay.style.background = "rgba(0,0,0,0.6)";
+  overlay.style.display = "flex";
+  overlay.style.alignItems = "center";
+  overlay.style.justifyContent = "center";
+  overlay.style.zIndex = "9999";
+
+  // Box
+  const box = document.createElement("div");
+  box.style.background = "#fff";
+  box.style.padding = "20px";
+  box.style.borderRadius = "12px";
+  box.style.width = "90%";
+  box.style.maxWidth = "400px";
+  box.style.boxShadow = "0 0 20px rgba(0,0,0,0.3)";
+  box.style.textAlign = "center";
+  box.style.fontFamily = "Arial";
+
+  // Titel
+  const title = document.createElement("h2");
+  title.innerText = gp.name;
+  box.appendChild(title);
+
+  // Bild
+  if (gp.image) {
+    const img = document.createElement("img");
+    img.src = gp.image;
+    img.style.width = "100%";
+    img.style.borderRadius = "8px";
+    img.style.marginBottom = "15px";
+    box.appendChild(img);
+  }
+
+  // Text
+  const text = document.createElement("p");
+  text.innerText = gp.task || gp.name;
+  text.style.fontSize = "18px";
+  box.appendChild(text);
+
+  // Schließen
+  const closeBtn = document.createElement("button");
+  closeBtn.innerText = "Schließen";
+  closeBtn.style.marginTop = "15px";
+  closeBtn.style.padding = "10px 20px";
+  closeBtn.style.fontSize = "16px";
+  closeBtn.style.border = "none";
+  closeBtn.style.borderRadius = "8px";
+  closeBtn.style.background = "#007bff";
+  closeBtn.style.color = "#fff";
+  closeBtn.style.cursor = "pointer";
+
+  closeBtn.onclick = () => overlay.remove();
+
+  box.appendChild(closeBtn);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
 }
