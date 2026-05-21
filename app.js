@@ -51,7 +51,7 @@ function starteRoute(punkte, farbe) {
 
 const routeHin = [
   [48.63269832105482, 9.775715624565734],   // Start
-  [48.62664071069303, 9.753973073782031],                                      // Station 1 
+  [48.634871, 9.783646],                                      // Station 1 
   [48.631932, 9.779618],                    // Aufgabe 1
   [48.626529, 9.778440],                                                  // Wegpunkt 
   [48.621970, 9.781733],                                     // Station 2 
@@ -193,14 +193,14 @@ function checkCheckpoints(userLat, userLng) {
 const gamePoints = [
   {
     name: "Station 1",
-    coords: [48.62664071069303, 9.753973073782031],
+    coords: [48.634871, 9.783646],
     type: "info",
     icon: "img/station1.png",
     reached: false
   },
   {
     name: "Aufgabe 1",
-    coords: [48.631932, 9.779618],
+    coords: [48.62664267251214, 9.753965403894398],
     type: "quest",
     task: "Wie viele Bänke stehen hier?",
     icon: "img/aufgabe1.png",
@@ -215,7 +215,7 @@ const gamePoints = [
   },
   {
     name: "Aufgabe 2",
-    coords: [48.624392, 9.786778],
+    coords: [48.62664267251214, 9.753965403894398],
     type: "quest",
     task: "Welche Farbe hat das Schild?",
     icon: "img/aufgabe1.png",
@@ -340,7 +340,7 @@ function checkGamePoints(userLat, userLng) {
     if (dist <= threshold) {
       gp.reached = true;
 
-      // Bild ändern, wenn erreicht
+      // Icon ändern
       gameMarkers[index].setIcon(
         L.icon({
           iconUrl: "img/erreicht.png",
@@ -349,25 +349,28 @@ function checkGamePoints(userLat, userLng) {
         })
       );
 
+      // Aufgabe anzeigen
       if (gp.type === "quest") {
         alert("Aufgabe bei " + gp.name + ":\n\n" + gp.task);
       } else {
         alert(gp.name + " erreicht!");
+      }
+
+      // In Firestore speichern
+      if (role === "team" && teamId) {
+        db.collection("teams").doc(teamId).update({
+          reachedTasks: firebase.firestore.FieldValue.arrayUnion(gp.name)
+        });
       }
     }
   });
 }
 
 
-
 // ---------------------------------------------------------
-// GPS
-// ---------------------------------------------------------
-// ---------------------------------------------------------
-// GPS – nur für Teams (role === "team")
+// GPS – nur für Teams
 // ---------------------------------------------------------
 let userMarker = null;
-// const role = localStorage.getItem("role");
 
 if (role === "team" && "geolocation" in navigator) {
   navigator.geolocation.watchPosition(
@@ -393,4 +396,43 @@ if (role === "team" && "geolocation" in navigator) {
   );
 } else if (role === "team") {
   alert("Geolocation wird nicht unterstützt.");
+}
+
+
+// ---------------------------------------------------------
+// ERREICHTE AUFGABEN BEIM LADEN ANZEIGEN
+// ---------------------------------------------------------
+if (role === "team" && teamId) {
+  db.collection("teams").doc(teamId).onSnapshot((doc) => {
+    const data = doc.data();
+    const reached = data.reachedTasks || [];
+
+    reached.forEach(taskName => {
+      const gp = gamePoints.find(g => g.name === taskName);
+      if (!gp) return;
+
+      const index = gamePoints.indexOf(gp);
+
+      // Icon setzen
+      gameMarkers[index].setIcon(
+        L.icon({
+          iconUrl: "img/erreicht.png",
+          iconSize: [45, 45],
+          iconAnchor: [22, 45]
+        })
+      );
+
+      // Klick-Handler nur EINMAL setzen
+      if (!gameMarkers[index]._hasClickHandler) {
+        gameMarkers[index].on("click", () => {
+          if (gp.type === "quest") {
+            alert("Aufgabe: " + gp.task);
+          } else {
+            alert(gp.name);
+          }
+        });
+        gameMarkers[index]._hasClickHandler = true;
+      }
+    });
+  });
 }
