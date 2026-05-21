@@ -15,6 +15,7 @@ const storage = firebase.storage();   // ← richtig
 const auth = firebase.auth();
 
 
+
 // --- Login-Funktionen für index.html ---
 
 async function loginTeam() {
