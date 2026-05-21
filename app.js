@@ -200,7 +200,7 @@ const gamePoints = [
   },
   {
     name: "Aufgabe 1",
-    coords: [48.62664267251214, 9.753965403894398],
+    coords: [48.631932, 9.779618],
     type: "quest",
     task: "Wie viele Bänke stehen hier?",
     icon: "img/aufgabe1.png",
@@ -219,6 +219,7 @@ const gamePoints = [
     type: "quest",
     task: "Welche Farbe hat das Schild?",
     icon: "img/aufgabe1.png",
+    image: "img/quest1.jpg",
     reached: false
   },
   {
@@ -425,12 +426,29 @@ if (role === "team" && teamId) {
       // Klick-Handler nur EINMAL setzen
       if (!gameMarkers[index]._hasClickHandler) {
         gameMarkers[index].on("click", () => {
+
+          // QUEST → Aufgabe anzeigen
           if (gp.type === "quest") {
+
+            // Wenn ein Bild existiert → Popup-Fenster mit Bild
+            if (gp.image) {
+              const w = window.open("");
+              w.document.write("<h2>" + gp.name + "</h2>");
+              w.document.write("<img src='" + gp.image + "' style='width:100%;max-width:300px;border-radius:8px;'>");
+              w.document.write("<p style='font-size:18px;'>" + gp.task + "</p>");
+              return;
+            }
+
+            // Ohne Bild → normaler Text
             alert("Aufgabe: " + gp.task);
-          } else {
+          }
+
+          // INFO-Punkt
+          else {
             alert(gp.name);
           }
         });
+
         gameMarkers[index]._hasClickHandler = true;
       }
     });
