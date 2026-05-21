@@ -193,7 +193,7 @@ function checkCheckpoints(userLat, userLng) {
 const gamePoints = [
   {
     name: "Station 1",
-    coords: [48.634871, 9.783646],
+    coords: [48.62664071069303, 9.753973073782031],
     type: "info",
     icon: "img/station1.png",
     reached: false
