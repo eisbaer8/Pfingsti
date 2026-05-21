@@ -7,20 +7,22 @@ admin.initializeApp();
 exports.deleteUpload = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     try {
-      const filePath = req.body.filePath;
-      const docId = req.body.docId;
+      const { filePath, docId } = req.body;
 
-      if (!filePath || !docId) {
-        return res.status(400).json({ error: "filePath und docId fehlen" });
+      // 🔥 1) Wenn KEIN Bild → nur Firestore löschen
+      if (!filePath) {
+        await admin.firestore().collection("uploads").doc(docId).delete();
+        return res.json({ success: true, message: "Nur Text gelöscht" });
       }
 
-      // Datei löschen
+      // 🔥 2) Wenn Bild vorhanden → zuerst Storage löschen
       await admin.storage().bucket().file(filePath).delete();
 
-      // Firestore-Eintrag löschen
+      // 🔥 3) Dann Firestore löschen
       await admin.firestore().collection("uploads").doc(docId).delete();
 
-      return res.status(200).json({ success: true });
+      return res.json({ success: true });
+
     } catch (err) {
       console.error("Fehler beim Löschen:", err);
       return res.status(500).json({ error: err.message });
