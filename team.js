@@ -33,7 +33,8 @@ async function uploadTask() {
   const taskId = document.getElementById("taskIdSelect").value;
   const answer = document.getElementById("answer").value.trim();
   const file = document.getElementById("file").files[0];
-  const teamId = localStorage.getItem("teamId");
+
+  // teamId kommt von oben: const teamId = window.teamId;
 
   if (!answer && !file) {
     alert("Bitte Antwort eingeben oder ein Bild auswählen");
@@ -47,14 +48,14 @@ async function uploadTask() {
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   };
 
-  // Wenn kein Bild → nur Firestore speichern
+  // Nur Text → direkt speichern
   if (!file) {
     await db.collection("uploads").add(uploadData);
     alert("Antwort gespeichert");
     return;
   }
 
-  // Wenn Bild vorhanden → zuerst hochladen
+  // Bild vorhanden → hochladen
   const storagePath = `uploads/${teamId}/${taskId}_${Date.now()}.png`;
   const storageRef = firebase.storage().ref().child(storagePath);
 
