@@ -1,33 +1,29 @@
-//index.html
+//admin html
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pfingst-Rallye</title>
+  <title>Admin-Dashboard</title>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Pfingst-Rallye</h1>
+  <h1>Admin-Dashboard</h1>
 
-  <div style="max-width: 400px; margin: 0 auto; text-align: center;">
-    <h2>Team-Login</h2>
-    <input id="teamCode" placeholder="Teamcode (z.B. team1)" />
-    <button onclick="loginTeam()">Team starten</button>
-
-    <hr>
-
-    <h2>Admin</h2>
-    <input id="adminCode" placeholder="Admin-Code" />
-    <button onclick="loginAdmin()">Admin öffnen</button>
-
-    <hr>
-
-    <h2>Viewer</h2>
-    <button onclick="loginViewer()">Nur Karte ansehen</button>
+  <div style="display: flex; height: calc(100vh - 60px);">
+    <div style="flex: 2;">
+      <div id="map"></div>
+    </div>
+    <div style="flex: 1; overflow-y: auto; padding: 10px; border-left: 1px solid #ccc;">
+      <h2>Uploads</h2>
+      <div id="uploadsList"></div>
+    </div>
   </div>
+
+  <!-- Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -36,5 +32,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
   <script src="firebase.js"></script>
+  <script src="app.js"></script>
+  <script src="admin.js"></script>
 </body>
 </html>

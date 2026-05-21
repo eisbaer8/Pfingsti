@@ -349,9 +349,13 @@ function checkGamePoints(userLat, userLng) {
 // ---------------------------------------------------------
 // GPS
 // ---------------------------------------------------------
+// ---------------------------------------------------------
+// GPS – nur für Teams (role === "team")
+// ---------------------------------------------------------
 let userMarker = null;
+const role = localStorage.getItem("role");
 
-if ("geolocation" in navigator) {
+if (role === "team" && "geolocation" in navigator) {
   navigator.geolocation.watchPosition(
     (pos) => {
       const lat = pos.coords.latitude;
@@ -373,6 +377,6 @@ if ("geolocation" in navigator) {
     (err) => console.error("GPS Fehler:", err),
     { enableHighAccuracy: true }
   );
-} else {
+} else if (role === "team") {
   alert("Geolocation wird nicht unterstützt.");
 }
