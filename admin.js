@@ -74,10 +74,10 @@ function deleteUploadEntry(filePath, docId) {
   if (!confirm("Willst du diesen Upload wirklich löschen")) return;
 
   fetch("https://us-central1-pfingsti.cloudfunctions.net/deleteUpload", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ filePath, docId })
-  })
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ filePath, docId })
+})
   .then(() => alert("Erfolgreich gelöscht"))
   .catch(err => alert("Fehler: " + err.message));
 }

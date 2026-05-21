@@ -4,7 +4,6 @@ const cors = require("cors")({ origin: true });
 
 admin.initializeApp();
 
-// HTTP-Function statt onCall → funktioniert mit GitHub Pages
 exports.deleteUpload = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
     try {
@@ -12,7 +11,7 @@ exports.deleteUpload = functions.https.onRequest((req, res) => {
       const docId = req.body.docId;
 
       if (!filePath || !docId) {
-        return res.status(400).send({ error: "filePath und docId fehlen" });
+        return res.status(400).json({ error: "filePath und docId fehlen" });
       }
 
       // Datei löschen
@@ -21,10 +20,10 @@ exports.deleteUpload = functions.https.onRequest((req, res) => {
       // Firestore-Eintrag löschen
       await admin.firestore().collection("uploads").doc(docId).delete();
 
-      return res.status(200).send({ success: true });
+      return res.status(200).json({ success: true });
     } catch (err) {
       console.error("Fehler beim Löschen:", err);
-      return res.status(500).send({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   });
 });
