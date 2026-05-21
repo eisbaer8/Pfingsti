@@ -5,9 +5,6 @@ if (adminRole !== "admin") {
   window.location.href = "index.html";
 }
 
-// Firestore + Functions
-// ❌ const db = firebase.firestore();  ← entfernen!
-const deleteFn = firebase.functions().httpsCallable("deleteUpload");
 
 // Marker-Speicher für Teams
 const teamMarkers = {};
@@ -74,14 +71,20 @@ function deleteUploadEntry(filePath, docId) {
   if (!confirm("Willst du diesen Upload wirklich löschen")) return;
 
   fetch("https://us-central1-pfingsti.cloudfunctions.net/deleteUpload", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ filePath, docId })
-})
-  .then(() => alert("Erfolgreich gelöscht"))
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ filePath, docId })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.error) {
+      alert("Fehler: " + data.error);
+    } else {
+      alert("Erfolgreich gelöscht");
+    }
+  })
   .catch(err => alert("Fehler: " + err.message));
 }
-
 
 // Starten
 renderUploads();
