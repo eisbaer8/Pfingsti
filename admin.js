@@ -53,9 +53,13 @@ function renderUploads() {
           <strong>Team:</strong> ${up.teamId}<br>
           <strong>Aufgabe:</strong> ${up.taskId}<br>
           <strong>Antwort:</strong> ${up.answer || "(keine)"}<br>
-          <a href="${up.url}" target="_blank">Bild ansehen</a><br><br>
 
-          <button onclick="deleteUploadEntry('${up.storagePath}', '${doc.id}')"
+          ${up.url 
+            ? `<a href="${up.url}" target="_blank">Bild ansehen</a>` 
+            : `<span>Kein Bild</span>`}
+          <br><br>
+
+          <button onclick="deleteUploadEntry(${JSON.stringify(up.storagePath || null)}, '${doc.id}')"
             style="background:#c62828;color:white;padding:6px 12px;border:none;border-radius:4px;cursor:pointer;">
             Löschen
           </button>
