@@ -30,48 +30,41 @@ if ("geolocation" in navigator) {
 
 // Upload-Funktion
 async function uploadTask() {
-  const taskId = document.getElementById("taskId").value.trim();
+  const taskId = document.getElementById("taskIdSelect").value;
   const answer = document.getElementById("answer").value.trim();
-  const fileInput = document.getElementById("file");
-  const file = fileInput.files[0];
+  const file = document.getElementById("file").files[0];
+  const teamId = localStorage.getItem("teamId");
 
-  if (!taskId) {
-    alert("Bitte eine Aufgabe-ID eingeben (z.B. aufgabe1)");
+  if (!answer && !file) {
+    alert("Bitte Antwort eingeben oder ein Bild auswählen");
     return;
   }
+
+  const uploadData = {
+    teamId,
+    taskId,
+    answer: answer || null,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  // Wenn kein Bild → nur Firestore speichern
   if (!file) {
-    alert("Bitte ein Bild auswählen");
+    await db.collection("uploads").add(uploadData);
+    alert("Antwort gespeichert");
     return;
   }
 
-  try {
-    // 🔥 Speicherpfad korrekt erzeugen
-    const fileName = `${taskId}_${Date.now()}.png`;
-    const storagePath = `uploads/${teamId}/${fileName}`;
+  // Wenn Bild vorhanden → zuerst hochladen
+  const storagePath = `uploads/${teamId}/${taskId}_${Date.now()}.png`;
+  const storageRef = firebase.storage().ref().child(storagePath);
 
-    // 🔥 Datei hochladen
-    const ref = storage.ref(storagePath);
-    await ref.put(file);
+  await storageRef.put(file);
+  const url = await storageRef.getDownloadURL();
 
-    // 🔥 Download-URL holen
-    const url = await ref.getDownloadURL();
+  uploadData.url = url;
+  uploadData.storagePath = storagePath;
 
-    // 🔥 Firestore-Eintrag speichern
-    await db.collection("uploads").add({
-      teamId,
-      taskId,
-      url,
-      answer: answer || null,
-      storagePath, // wichtig für deleteUpload()
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+  await db.collection("uploads").add(uploadData);
 
-    alert("Upload erfolgreich");
-    fileInput.value = "";
-    document.getElementById("answer").value = "";
-
-  } catch (e) {
-    console.error(e);
-    alert("Fehler beim Upload");
-  }
+  alert("Antwort + Bild gespeichert");
 }
