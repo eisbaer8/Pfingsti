@@ -50,7 +50,8 @@ function starteRoute(punkte, farbe) {
 // ---------------------------------------------------------
 
 const routeHin = [
-  [48.63269832105482, 9.775715624565734],   // Start
+  [48.63269832105482, 9.775715624565734],                     // Start
+  [48.628866, 9.778819],                                                //Weg Punkt
   [48.625673, 9.777330],                                      // Station 1 
   [48.623187, 9.779140],                    // Aufgabe 1                                          
   [48.621970, 9.781733],                                     // Station 2 
@@ -309,6 +310,7 @@ const gamePoints = [
     type: "quest",
     task: "Stellt das Bild nach! Ladet es wieder hoch! ",
     icon: "img/aufgabe1.png",
+    image: "img/quest8.jpg",
     reached: false
   },
   {
