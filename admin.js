@@ -16,13 +16,45 @@ db.collection("teams").onSnapshot((snap) => {
     const data = doc.data();
     if (!data.location) return;
 
-    const { lat, lng } = data.location;
+    const { lat, lng, updatedAt } = data.location;
 
+    // Minuten seit letzter Aktualisierung berechnen
+    let minutesAgo = null;
+    if (updatedAt) {
+      const now = Date.now();
+      const last = updatedAt.toDate().getTime();
+      const diffMs = now - last;
+      minutesAgo = Math.floor(diffMs / 60000);
+    }
+
+    // Farbe bestimmen
+    let color = "green";
+    if (minutesAgo >= 2) color = "yellow";
+    if (minutesAgo >= 5) color = "red";
+
+    // Icon erzeugen
+    const icon = L.icon({
+      iconUrl: `img/${color}.png`,
+      iconSize: [40, 40],
+      iconAnchor: [20, 40]
+    });
+
+    // Popup-Text
+    const popupText = `
+      <b>${teamId}</b><br>
+      Letzte Aktualisierung vor:<br>
+      ${minutesAgo} Minuten
+    `;
+
+    // Marker setzen oder aktualisieren
     if (!teamMarkers[teamId]) {
-      const marker = L.marker([lat, lng]).addTo(map).bindPopup(teamId);
+      const marker = L.marker([lat, lng], { icon }).addTo(map)
+        .bindPopup(popupText);
       teamMarkers[teamId] = marker;
     } else {
       teamMarkers[teamId].setLatLng([lat, lng]);
+      teamMarkers[teamId].setIcon(icon);
+      teamMarkers[teamId].setPopupContent(popupText);
     }
   });
 });
