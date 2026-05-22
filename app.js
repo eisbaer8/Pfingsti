@@ -215,7 +215,7 @@ const gamePoints = [
   },
   {
     name: "Aufgabe 2",
-    coords: [48.62664267251214, 9.753965403894398],
+    coords: [48.624392, 9.786778],
     type: "quest",
     task: "Welche Farbe hat das Schild?",
     icon: "img/aufgabe1.png",
@@ -308,6 +308,15 @@ const gamePoints = [
     type: "quest",
     task: "Welche Farbe hat das Schild?",
     icon: "img/aufgabe1.png",
+    reached: false
+  },
+  {
+    name: "Zeltplatz",
+    coords: [48.63262146083127, 9.774074830040538],
+    type: "quest",
+    task: "Pop Up da ? ",
+    icon: "img/tent.png",
+    image: "img/zeltplatz.jpg",
     reached: false
   }
 ];
