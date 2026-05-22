@@ -246,7 +246,7 @@ const gamePoints = [
   },
   {
     name: "Aufgabe 4",
-    coords: [48.614848, 9.795814],
+    coords: [48.615448, 9.790380],
     type: "quest",
     task: "Welche Farbe hat das Schild?",
     icon: "img/aufgabe1.png",
@@ -275,7 +275,7 @@ const gamePoints = [
   },
   {
     name: "Aufgabe 6",
-    coords: [48.610042, 9.780076],
+    coords: [48.610821, 9.776592],
     type: "quest",
     task: "Welche Farbe hat das Schild?",
     icon: "img/aufgabe1.png",
@@ -289,7 +289,7 @@ const gamePoints = [
   },
   {
     name: "Aufgabe 7",
-    coords: [48.614632, 9.772938],
+    coords: [48.617792, 9.771243],
     type: "quest",
     task: "Wie viele Bänke stehen hier?",
     icon: "img/aufgabe1.png",
