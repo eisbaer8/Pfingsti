@@ -9,7 +9,6 @@ if (adminRole !== "admin") {
 // Marker-Speicher für Teams
 const teamMarkers = {};
 
-// Live-Teams auf Karte anzeigen
 db.collection("teams").onSnapshot((snap) => {
   snap.forEach((doc) => {
     const teamId = doc.id;
@@ -18,19 +17,18 @@ db.collection("teams").onSnapshot((snap) => {
 
     const { lat, lng, updatedAt } = data.location;
 
-    // Minuten seit letzter Aktualisierung berechnen
+    // Minuten berechnen
     let minutesAgo = null;
     if (updatedAt) {
       const now = Date.now();
       const last = updatedAt.toDate().getTime();
-      const diffMs = now - last;
-      minutesAgo = Math.floor(diffMs / 60000);
+      minutesAgo = Math.floor((now - last) / 60000);
     }
 
     // Farbe bestimmen
     let color = "green";
-    if (minutesAgo >= 2) color = "yellow";
-    if (minutesAgo >= 5) color = "red";
+    if (minutesAgo >= 5) color = "yellow";
+    if (minutesAgo >= 10) color = "red";
 
     // Icon erzeugen
     const icon = L.icon({
@@ -39,7 +37,6 @@ db.collection("teams").onSnapshot((snap) => {
       iconAnchor: [20, 40]
     });
 
-    // Popup-Text
     const popupText = `
       <b>${teamId}</b><br>
       Letzte Aktualisierung vor:<br>

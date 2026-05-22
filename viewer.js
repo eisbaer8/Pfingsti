@@ -29,9 +29,9 @@ db.collection("teams").onSnapshot((snap) => {
     if (minutesAgo >= 5) color = "yellow";
     if (minutesAgo >= 10) color = "red";
 
-    // Leaflet-Icon erzeugen
+    // Icon erzeugen
     const icon = L.icon({
-      iconUrl: `img/${color}.png`,   // du brauchst green.png, yellow.png, red.png
+      iconUrl: `img/${color}.png`,
       iconSize: [40, 40],
       iconAnchor: [20, 40]
     });
