@@ -203,7 +203,7 @@ const gamePoints = [
     coords: [48.623187, 9.779140],
     type: "quest",
     task: "Mache ein Bild von einer Birke! \nMacht ein Bild davon und ladet es hoch! ",
-    icon: "img/aufgabe1.png",
+    icon: "img/B1.png",
     image: "img/A1.png",
     reached: false
   },
@@ -219,7 +219,7 @@ const gamePoints = [
     coords: [48.624392, 9.786778],
     type: "quest",
     task: "Baut auf eurem weg ein Steinmänchen! \nMacht ein Bild davon und ladet es hoch! \nMin. 6 übereinander! ",
-    icon: "img/aufgabe1.png",
+    icon: "img/img/B1.png",
     image: "img/A2.png",
     reached: false
   },
@@ -235,7 +235,7 @@ const gamePoints = [
     coords: [48.621579, 9.791860],
     type: "quest",
     task: "Macht ein Gruppen Bild von euch und ladet es hoch! \n Werdet creativ\n Langweilig mag keiner!",
-    icon: "img/aufgabe1.png",
+    icon: "img/img/B1.png.png",
     reached: false
   },
   {
@@ -250,7 +250,7 @@ const gamePoints = [
     coords: [48.615448, 9.790380],
     type: "quest",
     task: "Wie viele Pinguine sind auf dem Bild zusehen? ",
-    icon: "img/aufgabe1.png",
+    icon: "img/B1.png.png",
     image: "img/A4.png",
     reached: false
   },{
@@ -265,7 +265,7 @@ const gamePoints = [
     coords: [48.609789, 9.785213],
     type: "quest",
     task: "Trag eure/euren Betreuer/in? \nMacht ein Bild davon und ladet es hoch!",
-    icon: "img/aufgabe1.png",
+    icon: "img/B1.png",
     reached: false
   },
   {
@@ -280,7 +280,7 @@ const gamePoints = [
     coords: [48.610821, 9.776592],
     type: "quest",
     task: "Quiz \n Antworten Bitte so hochladen (Bsp: 1. 1873, 2. 99, 3. Bob (ältester) sophie (jüngste) \n 1. Seit wann gibt es das Pfingsti? \n 2. Wie viel Glühbirnen hängen im Gemeinschaftszelt? \n 3. Wer ist der älteste/jungste Betreuer ?",
-    icon: "img/aufgabe1.png",
+    icon: "img/B1.png",
     reached: false
   },{
     name: "Station 7",
@@ -294,7 +294,7 @@ const gamePoints = [
     coords: [48.617792, 9.7712435],
     type: "quest",
     task: "Der Boden ist Lava! Macht ein Bild von euch auf dem keiner von euch den Boden berührt! \n Werdet wieder creativ ! ",
-    icon: "img/aufgabe1.png",
+    icon: "img/B1.png",
     reached: false
   },
   {
@@ -390,7 +390,7 @@ function checkGamePoints(userLat, userLng) {
       // Icon ändern
       gameMarkers[index].setIcon(
         L.icon({
-          iconUrl: "img/erreicht.png",
+          iconUrl: "img/B2.png",
           iconSize: [45, 45],
           iconAnchor: [22, 45]
         })
