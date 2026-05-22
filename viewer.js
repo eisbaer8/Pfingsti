@@ -24,18 +24,6 @@ db.collection("teams").onSnapshot((snap) => {
       minutesAgo = Math.floor(diffMs / 60000);
     }
 
-    // Farbe bestimmen
-    let color = "green";
-    if (minutesAgo >= 5) color = "yellow";
-    if (minutesAgo >= 10) color = "red";
-
-    // Icon erzeugen
-    const icon = L.icon({
-      iconUrl: `img/${color}.png`,
-      iconSize: [40, 40],
-      iconAnchor: [20, 40]
-    });
-
     // Popup-Text
     const popupText = `
       <b>${teamId}</b><br>
@@ -43,14 +31,13 @@ db.collection("teams").onSnapshot((snap) => {
       ${minutesAgo} Minuten
     `;
 
-    // Marker setzen oder aktualisieren
+    // Marker setzen oder aktualisieren (ohne Icon)
     if (!viewerTeamMarkers[teamId]) {
-      const marker = L.marker([lat, lng], { icon }).addTo(map)
+      const marker = L.marker([lat, lng]).addTo(map)
         .bindPopup(popupText);
       viewerTeamMarkers[teamId] = marker;
     } else {
       viewerTeamMarkers[teamId].setLatLng([lat, lng]);
-      viewerTeamMarkers[teamId].setIcon(icon);
       viewerTeamMarkers[teamId].setPopupContent(popupText);
     }
   });
