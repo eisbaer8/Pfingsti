@@ -5,10 +5,10 @@ if (adminRole !== "admin") {
   window.location.href = "index.html";
 }
 
-
 // Marker-Speicher für Teams
 const teamMarkers = {};
 
+// TEAM-LIVEPOSITIONEN
 db.collection("teams").onSnapshot((snap) => {
   snap.forEach((doc) => {
     const teamId = doc.id;
@@ -26,14 +26,13 @@ db.collection("teams").onSnapshot((snap) => {
       minutesAgo = Math.floor(diffMs / 60000);
     }
 
-    // Popup-Text
     const popupText = `
       <b>${teamId}</b><br>
       Letzte Aktualisierung vor:<br>
       ${minutesAgo} Minuten
     `;
 
-    // Marker setzen oder aktualisieren (Standard-Icon)
+    // Marker setzen oder aktualisieren
     if (!teamMarkers[teamId]) {
       const marker = L.marker([lat, lng]).addTo(map)
         .bindPopup(popupText);
@@ -44,52 +43,6 @@ db.collection("teams").onSnapshot((snap) => {
     }
   });
 });
-
-  snap.forEach((doc) => {
-    const teamId = doc.id;
-    const data = doc.data();
-    if (!data.location) return;
-
-    const { lat, lng, updatedAt } = data.location;
-
-    // Minuten berechnen
-    let minutesAgo = null;
-    if (updatedAt) {
-      const now = Date.now();
-      const last = updatedAt.toDate().getTime();
-      minutesAgo = Math.floor((now - last) / 60000);
-    }
-
-    // Farbe bestimmen
-    let color = "green";
-    if (minutesAgo >= 5) color = "yellow";
-    if (minutesAgo >= 10) color = "red";
-
-    // Icon erzeugen
-    const icon = L.icon({
-      iconUrl: `img/${color}.png`,
-      iconSize: [40, 40],
-      iconAnchor: [20, 40]
-    });
-
-    const popupText = `
-      <b>${teamId}</b><br>
-      Letzte Aktualisierung vor:<br>
-      ${minutesAgo} Minuten
-    `;
-
-    // Marker setzen oder aktualisieren
-    if (!teamMarkers[teamId]) {
-      const marker = L.marker([lat, lng], { icon }).addTo(map)
-        .bindPopup(popupText);
-      teamMarkers[teamId] = marker;
-    } else {
-      teamMarkers[teamId].setLatLng([lat, lng]);
-      teamMarkers[teamId].setIcon(icon);
-      teamMarkers[teamId].setPopupContent(popupText);
-    }
-  });
-
 
 // Upload-Liste laden
 const uploadsList = document.getElementById("uploadsList");
@@ -124,7 +77,6 @@ function renderUploads() {
           <br><br>
 
           <button onclick="deleteUploadEntry('${up.storagePath || ""}', '${doc.id}')"
-
             style="background:#c62828;color:white;padding:6px 12px;border:none;border-radius:4px;cursor:pointer;">
             Löschen
           </button>
