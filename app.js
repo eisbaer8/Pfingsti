@@ -279,7 +279,7 @@ const gamePoints = [
     name: "Aufgabe 6",
     coords: [48.610821, 9.776592],
     type: "quest",
-    task: "Quiz \n Antworten Bitte so hochladen (Bsp: 1. 1873, 2. 99, 3. Bob (ältester) sophie (jüngste) \n 1. Seit wann gibt es das Pfingsti? \n 2. Wie viel Glühbirnen hängen im Gemeinschaftszelt? \n Wer ist der älteste/jungste Betreuer ?",
+    task: "Quiz \n Antworten Bitte so hochladen (Bsp: 1. 1873, 2. 99, 3. Bob (ältester) sophie (jüngste) \n 1. Seit wann gibt es das Pfingsti? \n 2. Wie viel Glühbirnen hängen im Gemeinschaftszelt? \n 3. Wer ist der älteste/jungste Betreuer ?",
     icon: "img/aufgabe1.png",
     reached: false
   },{
