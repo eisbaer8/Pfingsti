@@ -219,7 +219,7 @@ const gamePoints = [
     coords: [48.624392, 9.786778],
     type: "quest",
     task: "Baut auf eurem weg ein Steinmänchen! \nMacht ein Bild davon und ladet es hoch! \nMin. 6 übereinander! ",
-    icon: "img/img/B1.png",
+    icon: "img/B1.png",
     image: "img/A2.png",
     reached: false
   },
@@ -235,7 +235,7 @@ const gamePoints = [
     coords: [48.621579, 9.791860],
     type: "quest",
     task: "Macht ein Gruppen Bild von euch und ladet es hoch! \n Werdet creativ\n Langweilig mag keiner!",
-    icon: "img/img/B1.png.png",
+    icon: "img/B1.png",
     reached: false
   },
   {
@@ -250,7 +250,7 @@ const gamePoints = [
     coords: [48.615448, 9.790380],
     type: "quest",
     task: "Wie viele Pinguine sind auf dem Bild zusehen? ",
-    icon: "img/B1.png.png",
+    icon: "img/B1.png",
     image: "img/A4.png",
     reached: false
   },{
@@ -309,7 +309,7 @@ const gamePoints = [
     coords: [48.624662, 9.774031],
     type: "quest",
     task: "Stellt das Bild nach! Ladet es wieder hoch! ",
-    icon: "img/aufgabe1.png",
+    icon: "img/B1.png",
     image: "img/A8.png",
     reached: false
   },
