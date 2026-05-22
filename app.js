@@ -351,6 +351,13 @@ if (role === "team" && teamId) {
     swapCoords("Aufgabe 3", "Aufgabe 6");
     swapCoords("Aufgabe 4", "Aufgabe 5");
   }
+
+  console.log("ROLE / TEAM:", role, teamId);
+  console.log(
+    "GAMEPOINTS NACH SWAP:",
+    gamePoints.map(g => g.name + " → " + g.coords.join(", "))
+  );
+
 }
 
 const gameMarkers = [];
