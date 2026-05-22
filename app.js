@@ -51,9 +51,8 @@ function starteRoute(punkte, farbe) {
 
 const routeHin = [
   [48.63269832105482, 9.775715624565734],   // Start
-  [48.634871, 9.783646],                                      // Station 1 
-  [48.631932, 9.779618],                    // Aufgabe 1
-  [48.626529, 9.778440],                                                  // Wegpunkt 
+  [48.625673, 9.777330],                                      // Station 1 
+  [48.623187, 9.779140],                    // Aufgabe 1                                          
   [48.621970, 9.781733],                                     // Station 2 
   [48.624392, 9.786778],                    // Aufgabe 2
   [48.626293, 9.792231],                                     // Station 3
@@ -193,17 +192,18 @@ function checkCheckpoints(userLat, userLng) {
 const gamePoints = [
   {
     name: "Station 1",
-    coords: [48.634871, 9.783646],
+    coords: [48.625673, 9.777330],
     type: "info",
     icon: "img/station1.png",
     reached: false
   },
   {
     name: "Aufgabe 1",
-    coords: [48.631932, 9.779618],
+    coords: [48.623187, 9.779140],
     type: "quest",
-    task: "Wie viele Bänke stehen hier?",
+    task: "Mache ein Bild von einer Birke! \nMacht ein Bild davon und ladet es hoch! ",
     icon: "img/aufgabe1.png",
+    image: "img/quest1.jpg",
     reached: false
   },
   {
@@ -217,9 +217,9 @@ const gamePoints = [
     name: "Aufgabe 2",
     coords: [48.624392, 9.786778],
     type: "quest",
-    task: "Welche Farbe hat das Schild?",
+    task: "Baut auf eurem weg ein Steinmänchen! \nMacht ein Bild davon und ladet es hoch! \nMin. 6 übereinander! ",
     icon: "img/aufgabe1.png",
-    image: "img/quest1.jpg",
+    image: "img/quest2.jpg",
     reached: false
   },
   {
@@ -233,7 +233,7 @@ const gamePoints = [
     name: "Aufgabe 3",
     coords: [48.621579, 9.791860],
     type: "quest",
-    task: "Wie viele Bänke stehen hier?",
+    task: "Macht ein Gruppen Bild von euch und ladet es hoch! \n Werdet creativ\n Langweilig mag keiner!",
     icon: "img/aufgabe1.png",
     reached: false
   },
@@ -248,8 +248,9 @@ const gamePoints = [
     name: "Aufgabe 4",
     coords: [48.615448, 9.790380],
     type: "quest",
-    task: "Welche Farbe hat das Schild?",
+    task: "Wie viele Pinguine sind auf dem Bild zusehen? ",
     icon: "img/aufgabe1.png",
+    image: "img/quest4.jpg",
     reached: false
   },{
     name: "Station 5",
@@ -262,7 +263,7 @@ const gamePoints = [
     name: "Aufgabe 5",
     coords: [48.609789, 9.785213],
     type: "quest",
-    task: "Wie viele Bänke stehen hier?",
+    task: "Trag eure/euren Betreuer/in? \nMacht ein Bild davon und ladet es hoch!",
     icon: "img/aufgabe1.png",
     reached: false
   },
@@ -277,7 +278,7 @@ const gamePoints = [
     name: "Aufgabe 6",
     coords: [48.610821, 9.776592],
     type: "quest",
-    task: "Welche Farbe hat das Schild?",
+    task: "Quiz \n Antworten Bitte so hochladen (Bsp: 1. 1873, 2. 99, 3. Bob (ältester) sophie (jüngste) \n 1. Seit wann gibt es das Pfingsti? \n 2. Wie viel Glühbirnen hängen im Gemeinschaftszelt? \n Wer ist der älteste/jungste Betreuer ?",
     icon: "img/aufgabe1.png",
     reached: false
   },{
@@ -291,7 +292,7 @@ const gamePoints = [
     name: "Aufgabe 7",
     coords: [48.617792, 9.7712435],
     type: "quest",
-    task: "Wie viele Bänke stehen hier?",
+    task: "Der Boden ist Lava! Macht ein Bild von euch auf dem keiner von euch den Boden berührt! \n Werdet wieder creativ ! ",
     icon: "img/aufgabe1.png",
     reached: false
   },
@@ -306,7 +307,7 @@ const gamePoints = [
     name: "Aufgabe 8",
     coords: [48.624662, 9.774031],
     type: "quest",
-    task: "Welche Farbe hat das Schild?",
+    task: "Stellt das Bild nach! Ladet es wieder hoch! ",
     icon: "img/aufgabe1.png",
     reached: false
   },
@@ -320,6 +321,7 @@ const gamePoints = [
     reached: false
   }
 ];
+
 // ---------------------------------------------------------
 // KOORDINATEN FÜR TEAMS 2,4,6,8 SPIEGELN
 // ---------------------------------------------------------
@@ -338,12 +340,6 @@ if (role === "team" && teamId) {
       byName[a].coords = byName[b].coords;
       byName[b].coords = tmp;
     }
-
-    // Stationen
-    swapCoords("Station 1", "Station 8");
-    swapCoords("Station 2", "Station 7");
-    swapCoords("Station 3", "Station 6");
-    swapCoords("Station 4", "Station 5");
 
     // Aufgaben
     swapCoords("Aufgabe 1", "Aufgabe 8");
