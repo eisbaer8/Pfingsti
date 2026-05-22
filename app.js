@@ -320,6 +320,38 @@ const gamePoints = [
     reached: false
   }
 ];
+// ---------------------------------------------------------
+// KOORDINATEN FÜR TEAMS 2,4,6,8 SPIEGELN
+// ---------------------------------------------------------
+if (role === "team" && teamId) {
+  const teamNum = parseInt(teamId.replace("team", ""));
+
+  if ([2, 4, 6, 8].includes(teamNum)) {
+    const byName = {};
+    gamePoints.forEach(gp => {
+      byName[gp.name] = gp;
+    });
+
+    function swapCoords(a, b) {
+      if (!byName[a] || !byName[b]) return;
+      const tmp = byName[a].coords;
+      byName[a].coords = byName[b].coords;
+      byName[b].coords = tmp;
+    }
+
+    // Stationen
+    swapCoords("Station 1", "Station 8");
+    swapCoords("Station 2", "Station 7");
+    swapCoords("Station 3", "Station 6");
+    swapCoords("Station 4", "Station 5");
+
+    // Aufgaben
+    swapCoords("Aufgabe 1", "Aufgabe 8");
+    swapCoords("Aufgabe 2", "Aufgabe 7");
+    swapCoords("Aufgabe 3", "Aufgabe 6");
+    swapCoords("Aufgabe 4", "Aufgabe 5");
+  }
+}
 
 const gameMarkers = [];
 
@@ -379,21 +411,7 @@ function checkGamePoints(userLat, userLng) {
   });
 }
 
-// ---------------------------------------------------------
-// SPIEGELN DER KOORDINATEN FÜR TEAMS 2,4,6,8
-// ---------------------------------------------------------
-if (role === "team" && teamId) {
-  const teamNum = parseInt(teamId.replace("team", ""));
 
-  if ([2, 4, 6, 8].includes(teamNum)) {
-    const reversed = [...gamePoints].reverse();
-
-    // Koordinaten spiegeln
-    for (let i = 0; i < gamePoints.length; i++) {
-      gamePoints[i].coords = reversed[i].coords;
-    }
-  }
-}
 
 // ---------------------------------------------------------
 // GPS – nur für Teams
