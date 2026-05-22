@@ -13,14 +13,28 @@ db.collection("teams").onSnapshot((snap) => {
     const data = doc.data();
     if (!data.location) return;
 
-    const { lat, lng } = data.location;
+    const { lat, lng, updatedAt } = data.location;
+
+    let timeString = "Keine Zeit";
+    if (updatedAt) {
+      timeString = updatedAt.toDate().toLocaleString("de-DE");
+    }
 
     if (!viewerTeamMarkers[teamId]) {
       const marker = L.marker([lat, lng]).addTo(map)
-        .bindPopup(teamId);
+        .bindPopup(`
+          <b>${teamId}</b><br>
+          Letzte Aktualisierung:<br>
+          ${timeString}
+        `);
       viewerTeamMarkers[teamId] = marker;
     } else {
       viewerTeamMarkers[teamId].setLatLng([lat, lng]);
+      viewerTeamMarkers[teamId].setPopupContent(`
+        <b>${teamId}</b><br>
+        Letzte Aktualisierung:<br>
+        ${timeString}
+      `);
     }
   });
 });
