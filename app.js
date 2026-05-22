@@ -359,6 +359,9 @@ function checkGamePoints(userLat, userLng) {
 
       // In Firestore speichern
       if (role === "team" && teamId) {
+
+        console.log("🔥 SPEICHERE AUFGABE:", gp.name, "für Team:", teamId);
+
         db.collection("teams").doc(teamId).update({
           reachedTasks: firebase.firestore.FieldValue.arrayUnion(gp.name)
         });
