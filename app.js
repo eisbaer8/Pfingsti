@@ -379,6 +379,21 @@ function checkGamePoints(userLat, userLng) {
   });
 }
 
+// ---------------------------------------------------------
+// SPIEGELN DER KOORDINATEN FÜR TEAMS 2,4,6,8
+// ---------------------------------------------------------
+if (role === "team" && teamId) {
+  const teamNum = parseInt(teamId.replace("team", ""));
+
+  if ([2, 4, 6, 8].includes(teamNum)) {
+    const reversed = [...gamePoints].reverse();
+
+    // Koordinaten spiegeln
+    for (let i = 0; i < gamePoints.length; i++) {
+      gamePoints[i].coords = reversed[i].coords;
+    }
+  }
+}
 
 // ---------------------------------------------------------
 // GPS – nur für Teams
