@@ -204,7 +204,7 @@ const gamePoints = [
     type: "quest",
     task: "Mache ein Bild von einer Birke! \nMacht ein Bild davon und ladet es hoch! ",
     icon: "img/aufgabe1.png",
-    image: "img/quest1.jpg",
+    image: "img/A1.png",
     reached: false
   },
   {
@@ -220,7 +220,7 @@ const gamePoints = [
     type: "quest",
     task: "Baut auf eurem weg ein Steinmänchen! \nMacht ein Bild davon und ladet es hoch! \nMin. 6 übereinander! ",
     icon: "img/aufgabe1.png",
-    image: "img/quest2.jpg",
+    image: "img/A2.png",
     reached: false
   },
   {
@@ -251,7 +251,7 @@ const gamePoints = [
     type: "quest",
     task: "Wie viele Pinguine sind auf dem Bild zusehen? ",
     icon: "img/aufgabe1.png",
-    image: "img/quest4.jpg",
+    image: "img/A4.png",
     reached: false
   },{
     name: "Station 5",
@@ -310,7 +310,7 @@ const gamePoints = [
     type: "quest",
     task: "Stellt das Bild nach! Ladet es wieder hoch! ",
     icon: "img/aufgabe1.png",
-    image: "img/quest8.jpg",
+    image: "img/A8.png",
     reached: false
   },
   {
