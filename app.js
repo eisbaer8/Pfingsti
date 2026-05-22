@@ -289,7 +289,7 @@ const gamePoints = [
   },
   {
     name: "Aufgabe 7",
-    coords: [48.617792, 9.771243],
+    coords: [48.617792, 9.7712435],
     type: "quest",
     task: "Wie viele Bänke stehen hier?",
     icon: "img/aufgabe1.png",
