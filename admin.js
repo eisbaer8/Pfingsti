@@ -44,7 +44,10 @@ db.collection("teams").onSnapshot((snap) => {
   });
 });
 
-// Upload-Liste laden
+// ---------------------------------------------------------
+// UPLOAD-LISTE
+// ---------------------------------------------------------
+
 const uploadsList = document.getElementById("uploadsList");
 
 function renderUploads() {
