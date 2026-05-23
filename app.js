@@ -390,7 +390,7 @@ function checkGamePoints(userLat, userLng) {
       // Icon ändern
       gameMarkers[index].setIcon(
         L.icon({
-          iconUrl: "img/B2.png",
+          iconUrl: "img/erreicht.png",
           iconSize: [45, 45],
           iconAnchor: [22, 45]
         })
