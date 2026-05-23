@@ -66,8 +66,8 @@ const routeHin = [
   [48.608009, 9.781743],                                     // Station 5
   [48.610042, 9.780076],                    // Aufgabe 6
   [48.612247, 9.771929],                                     // Station 6
-  [48.614632, 9.772938],                    // Aufgabe 7
-  [48.621330, 9.770260],                                     // Station 7
+  [48.618271, 9.767538],                    // Aufgabe 7
+  [48.620183, 9.766210],                                     // Station 7
   [48.624662, 9.774031],                    // Aufgabe 8 
   [48.628866, 9.778819],                                     // Station 8 
   [48.63269832105482, 9.775715624565734]    // Ziel
@@ -284,14 +284,14 @@ const gamePoints = [
     reached: false
   },{
     name: "Station 7",
-    coords: [48.621330, 9.770260],
+    coords: [48.620183, 9.766210],
     type: "info",
     icon: "img/station7.png",
     reached: false
   },
   {
     name: "Aufgabe 7",
-    coords: [48.617792, 9.7712435],
+    coords: [48.618271, 9.767538],
     type: "quest",
     task: "Der Boden ist Lava! Macht ein Bild von euch auf dem keiner von euch den Boden berührt! \n Werdet wieder creativ ! ",
     icon: "img/B1.png",
